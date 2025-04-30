@@ -9,8 +9,8 @@ HOST = "localhost"
 server_socket = None
 
 """
-this function creates the server socket and returns it
-in the the main function 
+this function creates the server socket 
+and returns it in the the main function 
 """
 def create_server_socket():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,15 +20,17 @@ def create_server_socket():
     return server_socket
 
 """
-this function handles client requests 
-in a separate thread
+this function handles multiple client requests 
+
 """
 def handle_client(client_socket, address):
+    # the connection is established
     print(f"New connection from address: {address}")
     connected = True
     try:
         while connected:
             command = client_socket.recv(1024).decode()
+            # the client closes the connection
             if not command:
                 print(f"Connection closed by client: {address}")
                 return
@@ -38,7 +40,6 @@ def handle_client(client_socket, address):
                 set0 = list(map(int, data.split(',')))
                 product = math.prod(set0)
                 result = f"Multiplication: {product}"
-                
             elif command == "2":  # average
                 data = client_socket.recv(1024).decode()
                 set0 = list(map(int, data.split(',')))
@@ -47,18 +48,14 @@ def handle_client(client_socket, address):
                     result = f"Average: {average}"
                 else:
                     result = "Error: set0 is empty."
-                
             elif command == "3":  # set subtraction
                 set0_data = client_socket.recv(1024).decode()
                 set1_data = client_socket.recv(1024).decode()
                 set0 = list(map(int, set0_data.split(',')))
                 set1 = list(map(int, set1_data.split(',')))
                 
-                if len(set1) == 0:
-                    result = "Error: The length of set1 is zero"
-                else:
-                    difference = [a - b for a, b in zip(set0, set1)]
-                    result = f"Difference: {difference}"
+                difference = [a - b for a, b in zip(set0, set1)]
+                result = f"Difference: {difference}"
             else:
                 result = "Error: Invalid command"
 

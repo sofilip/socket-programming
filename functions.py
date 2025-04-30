@@ -9,12 +9,11 @@ PORT = 12346
 
 """ 
 input_validation() function
-  takes as input: 
+  input: 
       i) a prompt
       ii) the input type
       iii) a min value if theres one
       iv) a max value if theres one
-    output: 
 """
 def input_validation(prompt, input_type, min_val=None, max_val=None):
     while True:
@@ -65,21 +64,21 @@ sending_data() function
           1: multiply   
           2: average  
           3: subtraction  
-    returns: 
+  it sends the data sets to server
 """
 def sending_data(client_socket, operation, set0, set1=None):
     try:
-        # Test the connection
+        # test the connection
         flag = test_connection(client_socket, "client")
                 
         if flag == 0:
-            # Send the operation type to the server
+            # send the operation type to the server
             client_socket.send(str(operation).encode())
             print(f"Sent operation: {operation}")
             
-            # Send the data sets to the server
-            if operation == "3":  # For subtraction
-                # Ensure set1 is provided when operation is 3
+            # send the data sets to the server
+            if operation == "3":  # for subtraction
+                # ensure set1 is provided when operation is 3
                 if set1 is None:
                     print("Error: set1 must be provided for subtraction.")
                     return
@@ -91,7 +90,7 @@ def sending_data(client_socket, operation, set0, set1=None):
                 client_socket.send(','.join(map(str, set0)).encode())
                 print(f"Sent set0: {set0}")
             
-            # Receive the response from the server
+            # receive the response from the server
             response = client_socket.recv(1024).decode()
             print("Response from server:", response)
             return
@@ -106,4 +105,4 @@ def sending_data(client_socket, operation, set0, set1=None):
         return
     
     finally:
-        client_socket.close()  # Close the client socket when done
+        client_socket.close()  # close the client socket when done

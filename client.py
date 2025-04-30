@@ -46,6 +46,7 @@ if __name__ == "__main__":
             elif operation == 2:
                 sending_data(client_socket, "2", set0, [])
                 break
+            # if the sets are not empty and have the same size then this will send the sets 
             elif operation == 3 and (len(set0) == len(set1)) and (len(set0) != 0):
                 sending_data(client_socket, "3", set0, set1)
                 break

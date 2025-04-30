@@ -87,7 +87,6 @@ You can test the application by running both the server and multiple clients. In
 - Randomly generated using built-in Python functions
 
 #
-Author: Sofia Filippatou
 
 Course: Network Protocols
 

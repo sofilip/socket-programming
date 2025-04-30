@@ -21,7 +21,6 @@ def create_server_socket():
 
 """
 this function handles multiple client requests 
-
 """
 def handle_client(client_socket, address):
     # the connection is established
@@ -70,6 +69,10 @@ def handle_client(client_socket, address):
         except Exception as e:
             print(f"Error closing socket: {e}")
 
+"""
+this function starts
+server if possible
+"""
 def start():
     while True:
         try:
@@ -90,7 +93,8 @@ def start():
             return
         finally:
             return server_socket
-            
+
+# main            
 if __name__ == "__main__":
     try:
         while True:

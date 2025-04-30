@@ -34,15 +34,15 @@ def input_validation(prompt, input_type, min_val=None, max_val=None):
 """ 
 test_connection() function
   takes as input: 
-      i) user_socket
+      i) client_socket
       ii) an input: client or server 
     output: 
 """
-def test_connection(user_socket, input):
+def test_connection(client_socket, input):
     while True:
         if input == "client":
             try:
-                user_socket.connect((HOST, PORT))
+                client_socket.connect((HOST, PORT))
                 break  # exit the loop if the connection is successful
             except ConnectionRefusedError:
                 print("Server's Not Responding..")
@@ -59,46 +59,62 @@ def test_connection(user_socket, input):
 """ 
 sending_data() function
   takes as input: 
-      i) user_socket
+      i) client_socket
       ii) an operation: 
           1: multiply   
           2: average  
           3: subtraction  
     returns: 
 """
-def sending_data(user_socket, operation, set0, set1):
+def sending_data(client_socket, operation, set0, set1):
     try:
-        flag = test_connection(user_socket)
+        # test the connection
+        flag = test_connection(client_socket, "client")
         print(flag)
+        
         if flag == 0:
-            # start a thread to receive messages from the server
-            print("Sending data to Server..")
+            # send the operation type to the server
+            client_socket.send(str(operation).encode())
+            
+            # send the data sets to the server
+            if operation == 3:  # Assuming operation 3 is for subtraction
+                client_socket.send(','.join(map(str, set0)).encode())
+                client_socket.send(','.join(map(str, set1)).encode())
+            else:
+                client_socket.send(','.join(map(str, set0)).encode())
+            
+            # receive the response from the server
+            response = client_socket.recv(1024).decode()
+            print("Response from server:", response)
             return
-            # send_request(operation, numbers)
+        
         elif flag == 1:
             print("Server's Down...Exiting..")
             return
-    except Exception:
-            print("Exiting...")
-            return
-    finally:
-        user_socket.close()
+            
+    except Exception as e:
+        print(f"Error: {e}")
+        print("Exiting...")
         return
+    
+    finally:
+        client_socket.close()
 
 """ 
 operations(set0, set1, operation) function
   takes as input: 
-      i) user_socket
+      i) client_socket
       ii) an operation: 
           1: multiply   
           2: average  
           3: subtraction  
     returns: 
 """  
-def operations(set0, set1, operation):
-    if operation == 1:
-        return eval('*'.join(map(str, set0)))
-    elif operation == 2:
-        return sum(set0) / len(set0)
+def operations(operation, sets):
+    set0, set1 = sets  
+    if operation == 1: 
+        return str(eval('*'.join(map(str, set0))))
+    elif operation == 2: 
+        return str(sum(set0) / len(set0))
     else:
-        return [a - b for a, b in zip(set0, set1)]
+        return str([a - b for a, b in zip(set0, set1)])

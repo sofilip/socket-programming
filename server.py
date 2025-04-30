@@ -24,37 +24,46 @@ def create_server_socket():
     return server_socket
 
 """
-this function creates the server socket and returns it
-in the the main function 
+this function handles client requests 
+in a separate thread
 """
-def handle_client():
-    print(f"New connection from address: {HOST}")
+def handle_client(client_socket, address):
+    print(f"New connection from address: {address}")
     connected = True
-    while connected:
-        try:
-            msg_length = HOST.recv(HEADER).decode(FORMAT)
-            if msg_length:
-                msg_length = int(msg_length)
-                msg = HOST.recv(msg_length).decode(FORMAT)
-                if msg == DISCONNECT_MESSAGE:
-                    connected = False
-                # print(f"[{addr}] {msg}")
-            # conn.send("Msg received".encode(FORMAT))
-        except Exception or connected == False as e:
-            if Exception:
-                print(e)
-            break
-        finally:
-            HOST.close()
+    try:
+        while connected:
+            command = client_socket.recv(1024).decode()
+            if not command:
+                print(f"Connection closed by client: {address}")
+                break
+            
+            command = int(command)  
+            
+            if command == 3: 
+                set0 = client_socket.recv(1024).decode()
+                set1 = client_socket.recv(1024).decode()
+                result = operations(command, (list(map(int, set0.split(','))), list(map(int, set1.split(',')))))
+            else:
+                data = client_socket.recv(1024).decode()
+                result = operations(command, list(map(int, data.split(','))))
+            
+            client_socket.send(result.encode())
+    
+    except Exception as e:
+        print(f"Error handling client {address}: {e}")
+    
+    finally:
+        client_socket.close()  # Close the client socket when done
+        print(f"Connection closed for address: {address}")
 
 def start():
     while True:
-        try: 
+        try:
             server_socket = create_server_socket()
             if server_socket is not None:
                 print("Server started successfully !")
-                conn, addr = server_socket.accept()
-                thread = threading.Thread(target=handle_client, args=(conn, addr))
+                client_socket, address = server_socket.accept()
+                thread = threading.Thread(target=handle_client, args=(client_socket, address))
                 thread.start()
             else:
                 return

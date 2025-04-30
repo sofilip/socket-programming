@@ -1,4 +1,4 @@
-# Network Protocols
+# Network Protocols Assignment
 
 This project is part of a laboratory session. The task involves designing and implementing a custom communication protocol between a server and multiple clients.
 

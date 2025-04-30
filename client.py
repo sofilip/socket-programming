@@ -25,7 +25,7 @@ if __name__ == "__main__":
             for i in range(N_integers):
                 # if MULTIPLY then input > -5 and input < 5 => 1 byte signed integer
                 if operation == 1:
-                    set0.append(int(input_validation(f"Enter the {i}{'th'*(10<i%100<20)or' stndrd'[i%10*2:]} integer: ", int, min_val=-5, max_val=5)))
+                    set0.append(int(input_validation(f"Enter the {i}{'th'*(10<i%100<20)or' stndrd'[i%10*2:]} integer: ", int, min_val=0, max_val=60000)))                    
                     continue
                 # if AVERAGE then input > 0 and input < 200 => 1 byte unsigned integer
                 elif operation == 2:
@@ -41,13 +41,13 @@ if __name__ == "__main__":
                     continue
                 
             if operation == 1:
-                sending_data(client_socket, 1, set0, [])
+                sending_data(client_socket, "1", set0, [])
 
             elif operation == 2:
-                sending_data(client_socket, 2, set0, [])
+                sending_data(client_socket, "2", set0, [])
 
             elif operation == 3 and (len(set0) == len(set1)):
-                sending_data(client_socket, 3, set0, set1)
+                sending_data(client_socket, "3", set0, set1)
             else:
                 print("Unknown Error..")
                 break

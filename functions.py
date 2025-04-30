@@ -2,6 +2,7 @@ import socket
 import threading
 import time
 import functions
+import math
 
 HOST = 'localhost'
 PORT = 12346
@@ -66,24 +67,32 @@ sending_data() function
           3: subtraction  
     returns: 
 """
-def sending_data(client_socket, operation, set0, set1):
+def sending_data(client_socket, operation, set0, set1=None):
     try:
-        # test the connection
+        # Test the connection
         flag = test_connection(client_socket, "client")
         print(flag)
         
         if flag == 0:
-            # send the operation type to the server
+            # Send the operation type to the server
             client_socket.send(str(operation).encode())
+            print(f"Sent operation: {operation}")
             
-            # send the data sets to the server
-            if operation == 3:  # Assuming operation 3 is for subtraction
+            # Send the data sets to the server
+            if operation == "3":  # For subtraction
+                # Ensure set1 is provided when operation is 3
+                if set1 is None:
+                    print("Error: set1 must be provided for subtraction.")
+                    return
+                
                 client_socket.send(','.join(map(str, set0)).encode())
                 client_socket.send(','.join(map(str, set1)).encode())
+                print(f"Sent set0: {set0} and set1: {set1}")
             else:
                 client_socket.send(','.join(map(str, set0)).encode())
+                print(f"Sent set0: {set0}")
             
-            # receive the response from the server
+            # Receive the response from the server
             response = client_socket.recv(1024).decode()
             print("Response from server:", response)
             return
@@ -98,7 +107,7 @@ def sending_data(client_socket, operation, set0, set1):
         return
     
     finally:
-        client_socket.close()
+        client_socket.close()  # Close the client socket when done
 
 """ 
 operations(set0, set1, operation) function
@@ -110,11 +119,11 @@ operations(set0, set1, operation) function
           3: subtraction  
     returns: 
 """  
-def operations(operation, sets):
-    set0, set1 = sets  
-    if operation == 1: 
-        return str(eval('*'.join(map(str, set0))))
-    elif operation == 2: 
-        return str(sum(set0) / len(set0))
+def operations(operation, set0, set1):
+    # set0, set1 = sets  
+    if operation == "1": 
+        return math.prod(set0)
+    elif operation == "2": 
+        return math.sumprod(set0)/int(len(set0))
     else:
         return str([a - b for a, b in zip(set0, set1)])

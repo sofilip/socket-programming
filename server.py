@@ -37,24 +37,46 @@ def handle_client(client_socket, address):
                 print(f"Connection closed by client: {address}")
                 break
             
-            command = int(command)  
-            
-            if command == 3: 
-                set0 = client_socket.recv(1024).decode()
-                set1 = client_socket.recv(1024).decode()
-                result = operations(command, (list(map(int, set0.split(','))), list(map(int, set1.split(',')))))
-            else:
+            if command == "1":  # For multiplication
                 data = client_socket.recv(1024).decode()
-                result = operations(command, list(map(int, data.split(','))))
-            
+                set0 = list(map(int, data.split(',')))
+                product = math.prod(set0)
+                result = f"Multiplication: {product}"
+                
+            elif command == "2":  # For average
+                data = client_socket.recv(1024).decode()
+                set0 = list(map(int, data.split(',')))
+                if set0:
+                    average = sum(set0) / len(set0)
+                    result = f"Average: {average}"
+                else:
+                    result = "Error: set0 is empty."
+                
+            elif command == "3":  # For subtraction
+                set0_data = client_socket.recv(1024).decode()
+                set1_data = client_socket.recv(1024).decode()
+                set0 = list(map(int, set0_data.split(',')))
+                set1 = list(map(int, set1_data.split(',')))
+                
+                if len(set0) != len(set1):
+                    result = "Error: set0 and set1 must be of the same length."
+                else:
+                    difference = [a - b for a, b in zip(set0, set1)]
+                    result = f"Difference: {difference}"
+            else:
+                result = "Error: Invalid command."
+
             client_socket.send(result.encode())
     
     except Exception as e:
         print(f"Error handling client {address}: {e}")
+        connected = False  # Set connected to False to exit the loop
     
     finally:
-        client_socket.close()  # Close the client socket when done
-        print(f"Connection closed for address: {address}")
+        try:
+            client_socket.close()  # Close the client socket when done
+        except Exception as e:
+            print(f"Error closing socket: {e}")
 
 def start():
     while True:

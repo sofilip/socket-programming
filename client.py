@@ -25,16 +25,16 @@ if __name__ == "__main__":
             for i in range(N_integers):
                 # if MULTIPLY then input > -5 and input < 5 => 1 byte signed integer
                 if operation == 1:
-                    set0.append(int(input_validation(f"Enter the {i}{'th'*(10<i%100<20)or' stndrd'[i%10*2:]} integer: ", int, min_val=0, max_val=60000)))                    
+                    set0.append(int(input_validation(f"Enter integer: ", int, min_val=0, max_val=60000)))                    
                     continue
                 # if AVERAGE then input > 0 and input < 200 => 1 byte unsigned integer
                 elif operation == 2:
-                    set0.append(int(input_validation(f"Enter the {i}{'th'*(10<i%100<20)or' stndrd'[i%10*2:]} integer: ", int, min_val=0, max_val=200)))
+                    set0.append(int(input_validation(f"Enter integer: ", int, min_val=0, max_val=200)))
                     continue
                 # if SUBTRACT then input > 0 and input < 60000 => 4 byte signed integer
                 else:
-                    set0.append(int(input_validation(f"Enter the {i}{'th'*(10<i%100<20)or' stndrd'[i%10*2:]} integer for the 1st set: ", int, min_val=0, max_val=60000)))
-                    set1.append(int(input_validation(f"Enter the {i}{'th'*(10<i%100<20)or' stndrd'[i%10*2:]} integer for the 2nd set: ", int, min_val=0, max_val=60000)))
+                    set0.append(int(input_validation(f"Enter integer for the 1st set: ", int, min_val=0, max_val=60000)))
+                    set1.append(int(input_validation(f"Enter integer for the 2nd set: ", int, min_val=0, max_val=60000)))
                     if len(set0) != len(set1):
                         print("The sets should have the same length !")
                         break
@@ -42,12 +42,13 @@ if __name__ == "__main__":
                 
             if operation == 1:
                 sending_data(client_socket, "1", set0, [])
-
+                break
             elif operation == 2:
                 sending_data(client_socket, "2", set0, [])
-
-            elif operation == 3 and (len(set0) == len(set1)):
+                break
+            elif operation == 3 and (len(set0) == len(set1)) and (len(set0) != 0):
                 sending_data(client_socket, "3", set0, set1)
+                break
             else:
                 print("Unknown Error..")
                 break

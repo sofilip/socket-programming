@@ -3,12 +3,8 @@ from functions import *
 import socket
 import threading
 
-HEADER = 64
 PORT = 12346
 HOST = "localhost"
-ADDR = (HOST, PORT)
-FORMAT = 'UTF-8'
-DISCONNECT_MESSAGE = "!DISCONNECT"
 
 server_socket = None
 
@@ -35,15 +31,15 @@ def handle_client(client_socket, address):
             command = client_socket.recv(1024).decode()
             if not command:
                 print(f"Connection closed by client: {address}")
-                break
+                return
             
-            if command == "1":  # For multiplication
+            if command == "1":  # multiplication
                 data = client_socket.recv(1024).decode()
                 set0 = list(map(int, data.split(',')))
                 product = math.prod(set0)
                 result = f"Multiplication: {product}"
                 
-            elif command == "2":  # For average
+            elif command == "2":  # average
                 data = client_socket.recv(1024).decode()
                 set0 = list(map(int, data.split(',')))
                 if set0:
@@ -52,29 +48,28 @@ def handle_client(client_socket, address):
                 else:
                     result = "Error: set0 is empty."
                 
-            elif command == "3":  # For subtraction
+            elif command == "3":  # set subtraction
                 set0_data = client_socket.recv(1024).decode()
                 set1_data = client_socket.recv(1024).decode()
                 set0 = list(map(int, set0_data.split(',')))
                 set1 = list(map(int, set1_data.split(',')))
                 
-                if len(set0) != len(set1):
-                    result = "Error: set0 and set1 must be of the same length."
+                if len(set1) == 0:
+                    result = "Error: The length of set1 is zero"
                 else:
                     difference = [a - b for a, b in zip(set0, set1)]
                     result = f"Difference: {difference}"
             else:
-                result = "Error: Invalid command."
+                result = "Error: Invalid command"
 
             client_socket.send(result.encode())
     
     except Exception as e:
         print(f"Error handling client {address}: {e}")
-        connected = False  # Set connected to False to exit the loop
-    
+        connected = False  # exit the loop
     finally:
         try:
-            client_socket.close()  # Close the client socket when done
+            client_socket.close()  # close the client_socket when done
         except Exception as e:
             print(f"Error closing socket: {e}")
 
@@ -87,6 +82,7 @@ def start():
                 client_socket, address = server_socket.accept()
                 thread = threading.Thread(target=handle_client, args=(client_socket, address))
                 thread.start()
+                return
             else:
                 return
         except Exception as e:
@@ -106,8 +102,3 @@ if __name__ == "__main__":
             break
     except Exception as e:
         print("Something went wrong...")
-    finally:
-        if server_socket is not None:
-            server_socket.close()
-        else:
-            print("Couldnt find server socket")

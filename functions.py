@@ -71,8 +71,7 @@ def sending_data(client_socket, operation, set0, set1=None):
     try:
         # Test the connection
         flag = test_connection(client_socket, "client")
-        print(flag)
-        
+                
         if flag == 0:
             # Send the operation type to the server
             client_socket.send(str(operation).encode())
@@ -108,22 +107,3 @@ def sending_data(client_socket, operation, set0, set1=None):
     
     finally:
         client_socket.close()  # Close the client socket when done
-
-""" 
-operations(set0, set1, operation) function
-  takes as input: 
-      i) client_socket
-      ii) an operation: 
-          1: multiply   
-          2: average  
-          3: subtraction  
-    returns: 
-"""  
-def operations(operation, set0, set1):
-    # set0, set1 = sets  
-    if operation == "1": 
-        return math.prod(set0)
-    elif operation == "2": 
-        return math.sumprod(set0)/int(len(set0))
-    else:
-        return str([a - b for a, b in zip(set0, set1)])

@@ -20,7 +20,8 @@ def create_server_socket():
     return server_socket
 
 """
-this function handles multiple client requests 
+this function handles 
+multiple client requests 
 """
 def handle_client(client_socket, address):
     # the connection is established

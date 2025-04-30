@@ -12,7 +12,8 @@ input_validation() function
       i) a prompt
       ii) the input type
       iii) a min value if theres one
-      iv) a max value if theres one 
+      iv) a max value if theres one
+    output: 
 """
 def input_validation(prompt, input_type, min_val=None, max_val=None):
     while True:
@@ -35,6 +36,7 @@ test_connection() function
   takes as input: 
       i) user_socket
       ii) an input: client or server 
+    output: 
 """
 def test_connection(user_socket, input):
     while True:
@@ -62,6 +64,7 @@ sending_data() function
           1: multiply   
           2: average  
           3: subtraction  
+    returns: 
 """
 def sending_data(user_socket, operation, set0, set1):
     try:
@@ -81,7 +84,17 @@ def sending_data(user_socket, operation, set0, set1):
     finally:
         user_socket.close()
         return
-    
+
+""" 
+operations(set0, set1, operation) function
+  takes as input: 
+      i) user_socket
+      ii) an operation: 
+          1: multiply   
+          2: average  
+          3: subtraction  
+    returns: 
+"""  
 def operations(set0, set1, operation):
     if operation == 1:
         return eval('*'.join(map(str, set0)))

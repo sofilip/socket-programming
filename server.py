@@ -73,7 +73,7 @@ def handle_client(client_socket, address):
             client_socket.send(result.encode())
     
     except socket.timeout:
-        print(f"Client {address} timed out due to inactivity.")
+        print(f"Client {address} timed out due to inactivity")
     except Exception as e:
         print(f"Error handling client {address}: {e}")
     finally:
@@ -109,11 +109,11 @@ def start_server_with_timeout():
             thread.start()
         except socket.timeout:
             if time.time() - last_activity_time > INACTIVITY_TIMEOUT:
-                print(f"No activity for {INACTIVITY_TIMEOUT} seconds. Shutting down server.")
+                print(f"No activity for {INACTIVITY_TIMEOUT} seconds. Shutting down server...")
                 break
         except Exception as e:
             if isinstance(e, OSError) and e.errno == 98:
-                print("Error: Address already in use. Please wait or choose a different port.")
+                print("Error: Address already in use. Please wait or choose a different port")
                 break
             else:
                 print(f"An unexpected error occurred during server operation: {e}")
@@ -131,7 +131,7 @@ if __name__ == "__main__":
     try:
         start_server_with_timeout()
     except KeyboardInterrupt:
-        print("\nCtrl+C detected. Shutting down server gracefully...")
+        print("\nShutting down server gracefully...")
         # Ensure the server socket is closed if it's still open
         if server_socket:
             server_socket.close()
@@ -139,4 +139,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"An unhandled error occurred in the main block: {e}")
     finally:
-        print("Server has shut down.")
+        print("Server has shut down")

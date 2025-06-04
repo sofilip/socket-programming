@@ -1,7 +1,7 @@
 import socket
 import threading
 import time
-import math # Make sure to import math for math.prod if it's not in 'functions'
+import math 
 
 PORT = 12346
 HOST = "localhost"
@@ -32,7 +32,7 @@ multiple client requests
 def handle_client(client_socket, address):
     global LAST_ACTIVITY_TIME
     print(f"New connection from address: {address}")
-    LAST_ACTIVITY_TIME = time.time() # Update activity time when a new connection is handled
+    LAST_ACTIVITY_TIME = time.time() # update activity time when a new connection is handled
     connected = True
     try:
         while connected:
@@ -41,7 +41,7 @@ def handle_client(client_socket, address):
                 print(f"Connection closed by client: {address}")
                 break
             
-            LAST_ACTIVITY_TIME = time.time() # Update activity time for every command received
+            LAST_ACTIVITY_TIME = time.time() # update activity time for every command received
 
             if command == "1":  # multiplication
                 data = client_socket.recv(1024).decode()
@@ -93,14 +93,14 @@ def start_server_with_timeout():
     SERVER_SOCKET = create_SERVER_SOCKET()
     if SERVER_SOCKET is None:
         print("Failed to start server ! Exiting...")
-        return False # Indicate failure to start
+        return False # indicate failure to start
 
     print(f"Server started successfully on {HOST}:{PORT}")
-    LAST_ACTIVITY_TIME = time.time() # Initialize activity time
+    LAST_ACTIVITY_TIME = time.time() # initialize activity time
 
     while True:
         try:
-            SERVER_SOCKET.settimeout(1.0) # Check every 1 second
+            SERVER_SOCKET.settimeout(1.0) # check every 1 second
             
             client_socket, address = SERVER_SOCKET.accept()
             LAST_ACTIVITY_TIME = time.time()
@@ -119,20 +119,20 @@ def start_server_with_timeout():
                 print(f"An unexpected error occurred during server operation: {e}")
                 break
     
-    # This part will be reached if the loop breaks (due to inactivity or other error)
+    # this part will be reached if the loop breaks (due to inactivity or other error)
     if SERVER_SOCKET:
         print("Closing server socket due to inactivity or error...")
         SERVER_SOCKET.close()
-    return True # Indicate successful shutdown or that server was running
+    return True # indicate successful shutdown or that server was running
 
-# Main execution block
+# main execution block
 if __name__ == "__main__":
     print(f"Server is starting on {HOST}:{PORT}...")
     try:
         start_server_with_timeout()
     except KeyboardInterrupt:
         print("\nShutting down server gracefully...")
-        # Ensure the server socket is closed if it's still open
+        # ensure the server socket is closed if it's still open
         if SERVER_SOCKET:
             SERVER_SOCKET.close()
             print("Server socket closed")

@@ -6,21 +6,21 @@ import math # Make sure to import math for math.prod if it's not in 'functions'
 PORT = 12346
 HOST = "localhost"
 
-server_socket = None
-last_activity_time = time.time()
+SERVER_SOCKET = None
+LAST_ACTIVITY_TIME = time.time()
 INACTIVITY_TIMEOUT = 300 # 5 minutes * 60 seconds/minute
 
 """
 This function creates the server socket
 and returns it to the main function
 """
-def create_server_socket():
+def create_SERVER_SOCKET():
     try:
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_socket.bind((HOST, PORT))
-        server_socket.listen()
-        return server_socket
+        SERVER_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        SERVER_SOCKET.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        SERVER_SOCKET.bind((HOST, PORT))
+        SERVER_SOCKET.listen()
+        return SERVER_SOCKET
     except Exception as e:
         print(f"Error creating server socket: {e}")
         return None
@@ -30,9 +30,9 @@ This function handles
 multiple client requests
 """
 def handle_client(client_socket, address):
-    global last_activity_time
+    global LAST_ACTIVITY_TIME
     print(f"New connection from address: {address}")
-    last_activity_time = time.time() # Update activity time when a new connection is handled
+    LAST_ACTIVITY_TIME = time.time() # Update activity time when a new connection is handled
     connected = True
     try:
         while connected:
@@ -41,7 +41,7 @@ def handle_client(client_socket, address):
                 print(f"Connection closed by client: {address}")
                 break
             
-            last_activity_time = time.time() # Update activity time for every command received
+            LAST_ACTIVITY_TIME = time.time() # Update activity time for every command received
 
             if command == "1":  # multiplication
                 data = client_socket.recv(1024).decode()
@@ -55,7 +55,7 @@ def handle_client(client_socket, address):
                     average = sum(set0) / len(set0)
                     result = f"Average: {average}"
                 else:
-                    result = "Error: set0 is empty."
+                    result = "Error: set0 is empty !"
             elif command == "3":  # set subtraction
                 set0_data = client_socket.recv(1024).decode()
                 set1_data = client_socket.recv(1024).decode()
@@ -66,7 +66,7 @@ def handle_client(client_socket, address):
                     difference = [a - b for a, b in zip(set0, set1)]
                     result = f"Difference: {difference}"
                 else:
-                    result = "Error: Sets must have the same number of elements for subtraction."
+                    result = "Error: Sets must have the same number of elements for subtraction !"
             else:
                 result = "Error: Invalid command"
 
@@ -87,28 +87,28 @@ def handle_client(client_socket, address):
 This function starts the server and manages its lifecycle
 """
 def start_server_with_timeout():
-    global server_socket
-    global last_activity_time
+    global SERVER_SOCKET
+    global LAST_ACTIVITY_TIME
 
-    server_socket = create_server_socket()
-    if server_socket is None:
-        print("Failed to start server. Exiting.")
+    SERVER_SOCKET = create_SERVER_SOCKET()
+    if SERVER_SOCKET is None:
+        print("Failed to start server ! Exiting...")
         return False # Indicate failure to start
 
     print(f"Server started successfully on {HOST}:{PORT}")
-    last_activity_time = time.time() # Initialize activity time
+    LAST_ACTIVITY_TIME = time.time() # Initialize activity time
 
     while True:
         try:
-            server_socket.settimeout(1.0) # Check every 1 second
+            SERVER_SOCKET.settimeout(1.0) # Check every 1 second
             
-            client_socket, address = server_socket.accept()
-            last_activity_time = time.time()
+            client_socket, address = SERVER_SOCKET.accept()
+            LAST_ACTIVITY_TIME = time.time()
             thread = threading.Thread(target=handle_client, args=(client_socket, address))
             thread.daemon = True
             thread.start()
         except socket.timeout:
-            if time.time() - last_activity_time > INACTIVITY_TIMEOUT:
+            if time.time() - LAST_ACTIVITY_TIME > INACTIVITY_TIMEOUT:
                 print(f"No activity for {INACTIVITY_TIMEOUT} seconds. Shutting down server...")
                 break
         except Exception as e:
@@ -120,9 +120,9 @@ def start_server_with_timeout():
                 break
     
     # This part will be reached if the loop breaks (due to inactivity or other error)
-    if server_socket:
+    if SERVER_SOCKET:
         print("Closing server socket due to inactivity or error...")
-        server_socket.close()
+        SERVER_SOCKET.close()
     return True # Indicate successful shutdown or that server was running
 
 # Main execution block
@@ -133,8 +133,8 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nShutting down server gracefully...")
         # Ensure the server socket is closed if it's still open
-        if server_socket:
-            server_socket.close()
+        if SERVER_SOCKET:
+            SERVER_SOCKET.close()
             print("Server socket closed.")
     except Exception as e:
         print(f"An unhandled error occurred in the main block: {e}")

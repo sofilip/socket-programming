@@ -80,7 +80,7 @@ def sending_data(client_socket, operation, set0, set1=None):
             if operation == "3":  # for subtraction
                 # ensure set1 is provided when operation is 3
                 if set1 is None:
-                    print("Error: set1 must be provided for subtraction.")
+                    print("Error: set1 must be provided for subtraction")
                     return
                 
                 client_socket.send(','.join(map(str, set0)).encode())

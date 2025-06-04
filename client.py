@@ -1,12 +1,12 @@
 
 from functions import *
 
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+CLIENT_SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 if __name__ == "__main__":
     try:
         while True:
-            flag = test_connection(client_socket, "client")
+            flag = test_connection(CLIENT_SOCKET, "client")
             # user chooses operation 
             operation = int(input_validation("Choose operation: (1) MULTIPLY, (2) AVERAGE, (3) SUBTRACT or (0) EXIT to exit: ", int, min_val=0, max_val=4))
             if operation == 0:
@@ -41,14 +41,14 @@ if __name__ == "__main__":
                     continue
                 
             if operation == 1:
-                sending_data(client_socket, "1", set0, [])
+                sending_data(CLIENT_SOCKET, "1", set0, [])
                 break
             elif operation == 2:
-                sending_data(client_socket, "2", set0, [])
+                sending_data(CLIENT_SOCKET, "2", set0, [])
                 break
             # if the sets are not empty and have the same size then this will send the sets 
             elif operation == 3 and (len(set0) == len(set1)) and (len(set0) != 0):
-                sending_data(client_socket, "3", set0, set1)
+                sending_data(CLIENT_SOCKET, "3", set0, set1)
                 break
             else:
                 print("Unknown Error..")
@@ -56,4 +56,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Exiting...")
     finally:
-        client_socket.close()
+        CLIENT_SOCKET.close()

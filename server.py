@@ -73,7 +73,7 @@ def handle_client(client_socket, address):
             client_socket.send(result.encode())
     
     except socket.timeout:
-        print(f"Client {address} timed out due to inactivity")
+        print(f"Client {address} timed out due to inactivity !")
     except Exception as e:
         print(f"Error handling client {address}: {e}")
     finally:
@@ -135,8 +135,8 @@ if __name__ == "__main__":
         # Ensure the server socket is closed if it's still open
         if SERVER_SOCKET:
             SERVER_SOCKET.close()
-            print("Server socket closed.")
+            print("Server socket closed")
     except Exception as e:
         print(f"An unhandled error occurred in the main block: {e}")
     finally:
-        print("Server has shut down")
+        print("Server has shut down !")

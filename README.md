@@ -48,7 +48,7 @@ To keep dependencies isolated and consistent across environments, use a Python v
 ### 1. Create the virtual environment
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 ```
 
 ### 2. Activate the virtual environment

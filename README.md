@@ -2,11 +2,11 @@
 
 This project is part of a laboratory session. The task involves designing and implementing a custom communication protocol between a server and multiple clients.
 
-## 📚 Description
+## Description
 
 The task involves the development of a communication protocol between a server and multiple clients, designed to facilitate basic arithmetic operations. The server acts as a computational engine that can perform three specific tasks: multiplication of signed integers, calculation of the average of integers, and subtraction of two sets of integers.
 
-### 🧮 Supported Operations
+### Supported Operations
 
 The server supports the following three operations:
 
@@ -28,7 +28,7 @@ The server supports the following three operations:
    - Each integer must be in the range **0 to 60000**.
    - Returns a new set of `N` integers, where each value is the result of subtracting the corresponding value of the second set from the first.
 
-### 🧑‍💻 Client Behavior
+### Client Behavior
 
 - Sends a command to the server specifying the operation and the required input numbers.
 - Receives:
@@ -41,7 +41,7 @@ The server supports the following three operations:
 - Validates inputs and responds accordingly.
 - Maintains communication using a custom protocol with structured headers and payloads.
 
-## 📦 Virtual Environment Setup
+## Virtual Environment Setup
 
 To keep dependencies isolated and consistent across environments, use a Python virtual environment:
 
@@ -68,7 +68,7 @@ pip install -r requirements.txt
 ```
 > Create requirements.txt by running pip freeze > requirements.txt after installing any needed packages.
 
-## 📂 Deliverables
+## Deliverables
 1. Executable Python code for the Server.
 2. Executable Python code for the Client.
 
@@ -81,7 +81,7 @@ pip install -r requirements.txt
     - 2-byte signed = -32768 to 32767
     - 4-byte signed = -2147483648 to 2147483647
 
-## 🚀 Execution
+## Execution
 You can test the application by running both the server and multiple clients. Inputs can be:
 - Read from the keyboard
 - Randomly generated using built-in Python functions

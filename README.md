@@ -35,7 +35,7 @@ The server supports the following three operations:
   - The result of the operation, or
   - An error message describing the type of input validation failure (e.g., out-of-range values).
 
-### 🖥️ Server Behavior
+### Server Behavior
 
 - Accepts multiple client connections simultaneously (multithreaded or multiprocessing based on lab session 3).
 - Validates inputs and responds accordingly.
@@ -72,7 +72,7 @@ pip install -r requirements.txt
 1. Executable Python code for the Server.
 2. Executable Python code for the Client.
 
-## 🔧 Technical Guidelines
+## Technical Guidelines
 - Number range examples:
     - 1-byte unsigned = 0 to 255
     - 2-byte unsigned = 0 to 65535

@@ -11,7 +11,7 @@ LAST_ACTIVITY_TIME = time.time()
 INACTIVITY_TIMEOUT = 300 # 5 minutes * 60 seconds/minute
 
 """
-This function creates the server socket
+Creates the server socket
 and returns it to the main function
 """
 def create_SERVER_SOCKET():
@@ -26,8 +26,7 @@ def create_SERVER_SOCKET():
         return None
 
 """
-This function handles
-multiple client requests
+Handles multiple client requests
 """
 def handle_client(client_socket, address):
     global LAST_ACTIVITY_TIME
@@ -84,7 +83,7 @@ def handle_client(client_socket, address):
             print(f"Error closing client socket: {e}")
 
 """
-This function starts the server and manages its lifecycle
+Starts the server and manages its lifecycle
 """
 def start_server_with_timeout():
     global SERVER_SOCKET

@@ -41,38 +41,13 @@ The server supports the following three operations:
 - Validates inputs and responds accordingly.
 - Maintains communication using a custom protocol with structured headers and payloads.
 
-## Virtual Environment Setup
-
-To keep dependencies isolated and consistent across environments, use a Python virtual environment:
-
-### 1. Create the virtual environment
-
-```bash
-python3 -m venv venv
-```
-
-### 2. Activate the virtual environment
-On Windows:
-```bash
-venv\Scripts\activate
-```
-
-On macOS/Linux:
-```bash
-source venv/bin/activate
-```
-
-### 3. Install dependencies (if any)
-```bash
-pip install -r requirements.txt
-```
-> Create requirements.txt by running pip freeze > requirements.txt after installing any needed packages.
-
 ## Deliverables
+
 1. Executable Python code for the Server.
 2. Executable Python code for the Client.
 
 ## Technical Guidelines
+
 - Number range examples:
     - 1-byte unsigned = 0 to 255
     - 2-byte unsigned = 0 to 65535
@@ -82,6 +57,7 @@ pip install -r requirements.txt
     - 4-byte signed = -2147483648 to 2147483647
 
 ## Execution
+
 You can test the application by running both the server and multiple clients. Inputs can be:
 - Read from the keyboard
 - Randomly generated using built-in Python functions
